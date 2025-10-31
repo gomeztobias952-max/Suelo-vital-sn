@@ -1,70 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suelo Vital SN</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f9f0;
-            color: #333;
-            text-align: center;
-            margin: 0;
-            padding: 40px;
-        }
-        h1 {
-            color: #2e7d32;
-        }
-        .data-box {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: inline-block;
-            padding: 20px 40px;
-            margin-top: 20px;
-        }
-        .value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #1b5e20;
-        }
-        footer {
-            margin-top: 40px;
-            font-size: 0.9em;
-            color: #777;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suelo Vital SN - Monitoreo en Vivo</title>
+  <style>
+    body {
+      background-color: #f3f8f3;
+      color: #222;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #2a7b2e;
+    }
+    .sensor-box {
+      background: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      margin: 10px;
+      width: 280px;
+      text-align: center;
+    }
+    .average {
+      font-size: 1.4em;
+      color: #1c5521;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
+  <h1>🌱 Suelo Vital SN</h1>
+  <h3>Monitoreo en tiempo real (ThingSpeak)</h3>
 
-    <h1>🌿 Suelo Vital SN</h1>
-    <p>Monitoreo en tiempo real de altura promedio (ThingSpeak)</p>
+  <div id="sensors"></div>
+  <p class="average" id="average"></p>
 
-    <div class="data-box">
-        <div>Altura Promedio:</div>
-        <div class="value" id="altura">Cargando...</div>
-        <div>cm</div>
-    </div>
+  <script>
+    const channelID = "3141855";
+    const readAPIKey = "LMNEZ5PKF2Q9HUAH";
 
-    <footer>Proyecto de Tobias Gomez - 2025</footer>
+    async function getData() {
+      try {
+        // Traer los últimos valores del canal
+        const res = await fetch(`https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`);
+        const data = await res.json();
 
-    <script>
-        const API_URL = "https://api.thingspeak.com/channels/3141855/fields/1/last.json?api_key=LMNEZ5PKF2Q9HUAH";
-
-        async function actualizarDatos() {
-            try {
-                const respuesta = await fetch(API_URL);
-                const datos = await respuesta.json();
-                document.getElementById("altura").textContent = parseFloat(datos.field1).toFixed(2);
-            } catch (error) {
-                document.getElementById("altura").textContent = "Error";
-            }
+        if (!data.feeds || data.feeds.length === 0) {
+          document.getElementById("sensors").innerHTML = "<p>No hay datos disponibles.</p>";
+          return;
         }
 
-        actualizarDatos();
-        setInterval(actualizarDatos, 10000); // Actualiza cada 10 segundos
-    </script>
+        const feed = data.feeds[0];
+        const values = [
+          parseFloat(feed.field1),
+          parseFloat(feed.field2),
+          parseFloat(feed.field3),
+          parseFloat(feed.field4)
+        ];
 
+        const average = values.reduce((a, b) => a + b, 0) / values.length;
+
+        // Mostrar valores
+        let html = "";
+        for (let i = 0; i < values.length; i++) {
+          html += `<div class="sensor-box">Sensor ${i+1}: <strong>${values[i].toFixed(2)} cm</strong></div>`;
+        }
+
+        document.getElementById("sensors").innerHTML = html;
+        document.getElementById("average").innerHTML = `Altura promedio: ${average.toFixed(2)} cm`;
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("sensors").innerHTML = "<p>Error al obtener los datos.</p>";
+      }
+    }
+
+    // Actualizar cada 15 segundos
+    getData();
+    setInterval(getData, 15000);
+  </script>
 </body>
 </html>
