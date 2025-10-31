@@ -1,22 +1,14 @@
-/*
-  Proyecto: Suelo-vital-sn
-  Autor: Tobias Gomez
-  Descripción:
-  Lee 4 sensores ultrasónicos, calcula el promedio y envía los datos
-  directamente a ThingSpeak usando el módulo ESP-01 mediante comandos AT.
-*/
-
 #include <SoftwareSerial.h>
 
 // ---------------- CONFIGURACIÓN ESP ----------------
-SoftwareSerial esp(2, 3);  // RX Arduino(2) <-- TX ESP | TX Arduino(3) --> RX ESP
-
+SoftwareSerial esp(2, 3); // RX Arduino(2) <-- TX ESP | TX Arduino(3) --> RX ESP
 const char* WIFI_SSID = "Familia Gomez -2.4GHz";
 const char* WIFI_PASS = "2219427800";
 
 // ---------------- CONFIGURACIÓN THINGSPEAK ----------------
-const char* SERVER = "api.thingspeak.com";
-const char* WRITE_API_KEY = "TU_API_KEY";  // <--- reemplazá con tu clave real
+const char* THINGSPEAK_SERVER = "api.thingspeak.com";
+const char* THINGSPEAK_API_KEY = "8XBJK1GAW61UV11Q"; // Write API Key
+const int THINGSPEAK_PORT = 80;
 
 // ---------------- PINES SENSORES ----------------
 const int trigPin1 = 9, echoPin1 = 10;
@@ -31,15 +23,13 @@ const float factor1 = 1, factor2 = 1, factor3 = 1, factor4 = 1;
 
 // ---------------- FUNCIONES ----------------
 
-// Envía un comando AT y devuelve la respuesta
+// Envía comando AT y devuelve respuesta
 String enviarAT(String comando, const int timeOut) {
   String respuesta = "";
   esp.println(comando);
   long t = millis();
   while (millis() - t < timeOut) {
-    while (esp.available()) {
-      respuesta += esp.readString();
-    }
+    if (esp.available()) respuesta += esp.readString();
   }
   Serial.println("→ " + comando);
   Serial.println("← " + respuesta);
@@ -70,7 +60,7 @@ float medirDistancia(int trig, int echo, float factor) {
   return (validas > 0) ? suma / validas : -1;
 }
 
-// Conectar al WiFi
+// Conexión WiFi
 void conectarWiFi() {
   Serial.println("⏳ Conectando al WiFi...");
   enviarAT("AT", 1000);
@@ -90,29 +80,30 @@ void conectarWiFi() {
   enviarAT("AT+CIPMUX=0", 1000);
 }
 
-// Enviar datos a ThingSpeak (GET)
-void enviarAThingSpeak(float s1, float s2, float s3, float s4, float prom) {
-  String url = "GET /update?api_key=" + String(WRITE_API_KEY) +
-               "&field1=" + String(s1, 2) +
-               "&field2=" + String(s2, 2) +
-               "&field3=" + String(s3, 2) +
-               "&field4=" + String(s4, 2) +
-               "&field5=" + String(prom, 2) +
-               " HTTP/1.1\r\nHost: api.thingspeak.com\r\nConnection: close\r\n\r\n";
-
-  // Conectar al servidor
-  String cmd = String("AT+CIPSTART=\"TCP\",\"") + SERVER + "\",80";
+// Envío de datos a ThingSpeak
+void enviarAThingSpeak(float altura) {
+  String cmd = "AT+CIPSTART=\"TCP\",\"";
+  cmd += THINGSPEAK_SERVER;
+  cmd += "\",80";
   String resp = enviarAT(cmd, 5000);
   if (resp.indexOf("CONNECT") == -1) {
-    Serial.println("⚠ Error al conectar a ThingSpeak");
+    Serial.println("⚠ Error al conectar con ThingSpeak");
     return;
   }
 
-  // Indicar tamaño de envío
-  enviarAT("AT+CIPSEND=" + String(url.length()), 2000);
-  // Enviar el GET
-  enviarAT(url, 4000);
-  // Cerrar conexión
+  // Datos a enviar
+  String data = "api_key=" + String(THINGSPEAK_API_KEY) + "&field1=" + String(altura, 2);
+
+  // Encabezado HTTP
+  String peticion = "POST /update HTTP/1.1\r\n";
+  peticion += "Host: api.thingspeak.com\r\n";
+  peticion += "Connection: close\r\n";
+  peticion += "Content-Type: application/x-www-form-urlencoded\r\n";
+  peticion += "Content-Length: " + String(data.length()) + "\r\n\r\n";
+  peticion += data;
+
+  enviarAT("AT+CIPSEND=" + String(peticion.length()), 2000);
+  enviarAT(peticion, 5000);
   enviarAT("AT+CIPCLOSE", 1000);
 
   Serial.println("✅ Datos enviados a ThingSpeak");
@@ -140,7 +131,7 @@ void loop() {
   distancia3 = medirDistancia(trigPin3, echoPin3, factor3);
   distancia4 = medirDistancia(trigPin4, echoPin4, factor4);
 
-  // Mostrar mediciones individuales
+  // Mostrar mediciones
   Serial.println("📏 Lecturas de sensores ultrasónicos:");
   Serial.print("Sensor 1: "); Serial.print(distancia1, 2); Serial.println(" cm");
   Serial.print("Sensor 2: "); Serial.print(distancia2, 2); Serial.println(" cm");
@@ -148,7 +139,6 @@ void loop() {
   Serial.print("Sensor 4: "); Serial.print(distancia4, 2); Serial.println(" cm");
   Serial.println("----------------------------------------");
 
-  // Validar mediciones
   if (distancia1 < 0 || distancia2 < 0 || distancia3 < 0 || distancia4 < 0) {
     Serial.println("⚠ Error de sensor, repitiendo en 5s");
     digitalWrite(ledPin, HIGH);
@@ -162,11 +152,12 @@ void loop() {
   Serial.print(promedio, 2);
   Serial.println(" cm");
 
-  // LED indicador (ejemplo: alerta si < 20 cm)
+  // LED indicador
   digitalWrite(ledPin, promedio < 20 ? HIGH : LOW);
 
   // Enviar a ThingSpeak
-  enviarAThingSpeak(distancia1, distancia2, distancia3, distancia4, promedio);
+  enviarAThingSpeak(promedio);
 
-  delay(20000);  // mínimo 15 s entre envíos (ThingSpeak)
+  Serial.println();
+  delay(20000); // ThingSpeak permite 1 envío cada 15 segundos (mínimo)
 }
