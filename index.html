@@ -2,87 +2,83 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suelo Vital SN - Monitoreo en Vivo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Suelo Vital SN</title>
   <style>
     body {
-      background-color: #f3f8f3;
-      color: #222;
       font-family: "Segoe UI", sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px;
-    }
-    h1 {
-      color: #2a7b2e;
-    }
-    .sensor-box {
-      background: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      margin: 10px;
-      width: 280px;
+      background: #f0fdf4;
+      color: #222;
       text-align: center;
+      padding: 20px;
     }
-    .average {
-      font-size: 1.4em;
-      color: #1c5521;
+    h1 { color: #2e7d32; }
+    .contenedor {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 15px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 20px;
+      width: 200px;
+    }
+    .card h3 {
+      margin: 0;
+      color: #1565c0;
+    }
+    .valor {
+      font-size: 1.5em;
       font-weight: bold;
+      color: #1b5e20;
+      margin-top: 5px;
+    }
+    .promedio {
+      background: #e8f5e9;
+      color: #2e7d32;
     }
   </style>
 </head>
 <body>
-  <h1>🌱 Suelo Vital SN</h1>
+  <h1>🌿 Suelo Vital SN</h1>
   <h3>Monitoreo en tiempo real (ThingSpeak)</h3>
 
-  <div id="sensors"></div>
-  <p class="average" id="average"></p>
+  <div class="contenedor">
+    <div class="card"><h3>Sensor 1</h3><div id="s1" class="valor">--</div></div>
+    <div class="card"><h3>Sensor 2</h3><div id="s2" class="valor">--</div></div>
+    <div class="card"><h3>Sensor 3</h3><div id="s3" class="valor">--</div></div>
+    <div class="card"><h3>Sensor 4</h3><div id="s4" class="valor">--</div></div>
+    <div class="card promedio"><h3>Promedio</h3><div id="prom" class="valor">--</div></div>
+  </div>
 
   <script>
-    const channelID = "3141855";
-    const readAPIKey = "LMNEZ5PKF2Q9HUAH";
+    const channelID = "3141855";  // Tu canal
+    const readAPIKey = "";        // Dejar vacío si es público
+    const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?results=1&api_key=${readAPIKey}`;
 
-    async function getData() {
+    async function actualizar() {
       try {
-        // Traer los últimos valores del canal
-        const res = await fetch(`https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`);
+        const res = await fetch(url);
         const data = await res.json();
-
-        if (!data.feeds || data.feeds.length === 0) {
-          document.getElementById("sensors").innerHTML = "<p>No hay datos disponibles.</p>";
-          return;
-        }
-
         const feed = data.feeds[0];
-        const values = [
-          parseFloat(feed.field1),
-          parseFloat(feed.field2),
-          parseFloat(feed.field3),
-          parseFloat(feed.field4)
-        ];
+        if (!feed) return;
 
-        const average = values.reduce((a, b) => a + b, 0) / values.length;
-
-        // Mostrar valores
-        let html = "";
-        for (let i = 0; i < values.length; i++) {
-          html += `<div class="sensor-box">Sensor ${i+1}: <strong>${values[i].toFixed(2)} cm</strong></div>`;
-        }
-
-        document.getElementById("sensors").innerHTML = html;
-        document.getElementById("average").innerHTML = `Altura promedio: ${average.toFixed(2)} cm`;
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("sensors").innerHTML = "<p>Error al obtener los datos.</p>";
+        document.getElementById("s1").textContent = `${parseFloat(feed.field1).toFixed(2)} cm`;
+        document.getElementById("s2").textContent = `${parseFloat(feed.field2).toFixed(2)} cm`;
+        document.getElementById("s3").textContent = `${parseFloat(feed.field3).toFixed(2)} cm`;
+        document.getElementById("s4").textContent = `${parseFloat(feed.field4).toFixed(2)} cm`;
+        document.getElementById("prom").textContent = `${parseFloat(feed.field5).toFixed(2)} cm`;
+      } catch (e) {
+        console.error("Error al obtener datos:", e);
       }
     }
 
-    // Actualizar cada 15 segundos
-    getData();
-    setInterval(getData, 15000);
+    actualizar();
+    setInterval(actualizar, 15000); // cada 15 s
   </script>
 </body>
 </html>
