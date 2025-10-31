@@ -21,13 +21,18 @@
       color: #333;
       margin-bottom: 20px;
     }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+    }
     .card {
       background: white;
       border-radius: 20px;
       padding: 20px;
-      margin: 15px auto;
-      width: 80%;
-      max-width: 350px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     .card h3 {
@@ -40,7 +45,7 @@
       margin-top: 10px;
     }
     footer {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 0.9em;
       color: #666;
     }
@@ -50,15 +55,15 @@
   <h1>🌿 Suelo Vital SN</h1>
   <h2>Monitoreo en tiempo real (ThingSpeak)</h2>
 
-  <div id="sensores"></div>
+  <div id="contenedor" class="grid"></div>
 
-  <footer>📡 Datos actualizados desde ThingSpeak</footer>
+  <footer id="lastUpdate">📡 Cargando datos...</footer>
 
   <script>
     const channelID = 3141855;
     const readAPIKey = "LMNEZ5PKF2Q9HUAH";
 
-    const fields = [
+    const sensores = [
       { id: 1, nombre: "Sensor 1" },
       { id: 2, nombre: "Sensor 2" },
       { id: 3, nombre: "Sensor 3" },
@@ -66,14 +71,14 @@
       { id: 5, nombre: "Promedio" }
     ];
 
-    const contenedor = document.getElementById("sensores");
+    const contenedor = document.getElementById("contenedor");
 
-    fields.forEach(field => {
+    sensores.forEach(s => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <h3>${field.nombre}</h3>
-        <div id="valor${field.id}" class="value">--</div>
+        <h3>${s.nombre}</h3>
+        <div id="valor${s.id}" class="value">--</div>
       `;
       contenedor.appendChild(card);
     });
@@ -81,17 +86,29 @@
     async function actualizarDatos() {
       try {
         const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
-        const respuesta = await fetch(url);
-        const data = await respuesta.json();
-        const feed = data.feeds[0];
+        const resp = await fetch(url);
+        const data = await resp.json();
 
-        fields.forEach(field => {
-          const valor = feed[`field${field.id}`];
-          document.getElementById(`valor${field.id}`).textContent =
+        if (!data.feeds || data.feeds.length === 0) {
+          console.warn("Sin datos recientes");
+          return;
+        }
+
+        const feed = data.feeds[0];
+        sensores.forEach(s => {
+          const valor = feed[`field${s.id}`];
+          document.getElementById(`valor${s.id}`).textContent =
             valor ? `${parseFloat(valor).toFixed(2)} cm` : "--";
         });
-      } catch (error) {
-        console.error("Error al obtener datos:", error);
+
+        // Mostrar fecha/hora última actualización
+        const fecha = new Date(feed.created_at);
+        document.getElementById("lastUpdate").textContent =
+          `📅 Última actualización: ${fecha.toLocaleString()}`;
+      } catch (err) {
+        console.error("Error al obtener datos:", err);
+        document.getElementById("lastUpdate").textContent =
+          "⚠ Error al conectar con ThingSpeak";
       }
     }
 
