@@ -1,137 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suelo Vital SN</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(180deg, #e8f5e9, #ffffff);
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: linear-gradient(90deg, #4caf50, #66bb6a);
-      color: white;
-      padding: 15px 0;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-    h1 {
-      font-size: 2em;
-      margin: 0;
-    }
-    table {
-      margin: 40px auto;
-      border-collapse: collapse;
-      width: 90%;
-      max-width: 900px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 14px;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-    th {
-      background-color: #f1f8e9;
-      color: #388e3c;
-    }
-    td.status {
-      font-weight: bold;
-      color: white;
-      border-radius: 8px;
-    }
-    .correcto { background-color: #4caf50; }
-    .intermedio { background-color: #fbc02d; }
-    .error { background-color: #e53935; }
-    footer {
-      margin-top: 30px;
-      color: #777;
-      font-size: 0.9em;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Suelo Vital SN</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: url('https://cdn.pixabay.com/photo/2017/07/23/20/34/grass-2531083_1280.jpg') center/cover no-repeat fixed;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 15px;
+  }
+
+  header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+  }
+
+  header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+
+  header p {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+
+  table {
+    background: rgba(255, 255, 255, 0.9);
+    border-collapse: collapse;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 95%;
+    max-width: 800px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  th, td {
+    padding: 15px;
+    text-align: center;
+  }
+
+  th {
+    background: #f4f4f4;
+    font-weight: 700;
+    color: #333;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  td#estado {
+    font-weight: 700;
+    border-radius: 10px;
+    color: #fff;
+  }
+
+  .estado-rojo {
+    background: #e74c3c;
+    box-shadow: 0 0 8px #e74c3c88;
+  }
+
+  .estado-amarillo {
+    background: #f1c40f;
+    color: #000;
+    box-shadow: 0 0 8px #f1c40f88;
+  }
+
+  .estado-verde {
+    background: #27ae60;
+    box-shadow: 0 0 8px #27ae6088;
+  }
+
+  footer {
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  }
+
+  .actualizacion {
+    margin-top: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>🌿 Suelo Vital SN</h1>
-    <p>Monitoreo en tiempo real — Datos desde ThingSpeak</p>
-  </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre del Cliente</th>
-        <th>Dirección</th>
-        <th>Altura S1</th>
-        <th>Altura S2</th>
-        <th>Altura S3</th>
-        <th>Altura S4</th>
-        <th>Altura Promedio</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr id="data-row">
-        <td>ITEC</td>
-        <td>Av. Pres. Juan Domingo Perón 1933</td>
-        <td id="s1">--</td>
-        <td id="s2">--</td>
-        <td id="s3">--</td>
-        <td id="s4">--</td>
-        <td id="promedio">--</td>
-        <td id="estado" class="status">--</td>
-      </tr>
-    </tbody>
-  </table>
+<header>
+  <h1>🌿 Suelo Vital SN</h1>
+  <p>Tu jardín siempre perfecto, sin que te des cuenta</p>
+</header>
 
-  <footer>
-    <p>© 2025 Suelo Vital SN — Proyecto ITEC</p>
-  </footer>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre del Cliente</th>
+      <th>Dirección</th>
+      <th>Altura del césped (promedio)</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Itec</td>
+      <td>Av. Pres. Juan Domingo Perón 1933</td>
+      <td id="promedio">-- cm</td>
+      <td id="estado">--</td>
+    </tr>
+  </tbody>
+</table>
 
-  <script>
-    const channelID = 3141855;
-    const readAPIKey = "LMNEZ5PKF2Q9HUAH";
+<div class="actualizacion" id="actualizacion">Última actualización: --</div>
 
-    async function fetchData() {
-      try {
-        const response = await fetch(`https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`);
-        const data = await response.json();
-        const last = data.feeds[0];
+<footer>© 2025 Suelo Vital SN — Proyecto ITEC</footer>
 
-        const s1 = parseFloat(last.field1);
-        const s2 = parseFloat(last.field2);
-        const s3 = parseFloat(last.field3);
-        const s4 = parseFloat(last.field4);
-        const promedio = ((s1 + s2 + s3 + s4) / 4).toFixed(2);
+<script>
+  const channelID = 3141855;
+  const readAPIKey = "LMNEZ5PKF2Q9HUAH";
 
-        document.getElementById("s1").innerText = `${s1} cm`;
-        document.getElementById("s2").innerText = `${s2} cm`;
-        document.getElementById("s3").innerText = `${s3} cm`;
-        document.getElementById("s4").innerText = `${s4} cm`;
-        document.getElementById("promedio").innerText = `${promedio} cm`;
+  async function actualizarDatos() {
+    try {
+      const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
+      const res = await fetch(url);
+      const data = await res.json();
 
-        const estado = document.getElementById("estado");
-        if (promedio < 20) {
-          estado.innerText = "ERROR (Menos de 20 cm)";
-          estado.className = "status error";
-        } else if (promedio >= 20 && promedio <= 22) {
-          estado.innerText = "INTERMEDIO (20–22 cm)";
-          estado.className = "status intermedio";
-        } else {
-          estado.innerText = "CORRECTO (Más de 22 cm)";
-          estado.className = "status correcto";
-        }
-      } catch (error) {
-        console.error("Error al obtener datos:", error);
+      const feed = data.feeds[0];
+      const promedio = parseFloat(feed.field5);
+
+      document.getElementById("promedio").textContent = promedio.toFixed(2) + " cm";
+
+      const estado = document.getElementById("estado");
+      estado.className = "";
+
+      if (promedio < 20) {
+        estado.textContent = "Incorrecto";
+        estado.classList.add("estado-rojo");
+      } else if (promedio >= 20 && promedio <= 22) {
+        estado.textContent = "Intermedio";
+        estado.classList.add("estado-amarillo");
+      } else {
+        estado.textContent = "Correcto";
+        estado.classList.add("estado-verde");
       }
-    }
 
-    fetchData();
-    setInterval(fetchData, 15000);
-  </script>
+      const fecha = new Date(feed.created_at);
+      document.getElementById("actualizacion").textContent =
+        "📅 Última actualización: " + fecha.toLocaleString();
+
+    } catch (error) {
+      console.error("Error al obtener datos:", error);
+    }
+  }
+
+  actualizarDatos();
+  setInterval(actualizarDatos, 20000);
+</script>
+
 </body>
 </html>
