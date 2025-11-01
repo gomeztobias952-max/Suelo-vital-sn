@@ -5,57 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🌿 Suelo Vital SN</title>
   <style>
+    /* ---- ESTILO GENERAL ---- */
     body {
-      background-color: #eaf8ee;
+      margin: 0;
       font-family: "Poppins", sans-serif;
+      background: url("https://i.imgur.com/lSxN2qA.jpg") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* ---- CABECERA ---- */
+    header {
       text-align: center;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      padding: 40px 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      font-size: 2.5em;
       margin: 0;
-      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
-    h1 {
-      color: #1b8b3b;
-      font-size: 2em;
-      margin-top: 30px;
+
+    header img {
+      width: 40px;
+      height: 40px;
     }
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
+
+    header p {
+      font-size: 1.2em;
+      margin-top: 8px;
+      color: #dfe6e9;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
+
+    /* ---- TABLA ---- */
+    table {
+      margin-top: 40px;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
       width: 90%;
-      max-width: 800px;
-      margin: auto;
+      max-width: 750px;
+      backdrop-filter: blur(8px);
     }
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    th, td {
+      padding: 18px 25px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
-    .card h3 {
-      color: #0056b3;
-      margin: 0;
+
+    th {
+      background-color: #f7f7f0;
+      font-size: 1.1em;
     }
-    .value {
-      font-size: 1.8em;
-      color: #008000;
-      margin-top: 10px;
+
+    td {
+      font-size: 1.05em;
     }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ---- ESTADOS ---- */
+    .estado {
+      font-weight: bold;
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-align: center;
+      color: white;
+      display: inline-block;
+      min-width: 120px;
+      transition: all 0.3s ease;
+    }
+
+    .bajo {
+      background-color: #e63946;
+      box-shadow: 0 0 10px rgba(230, 57, 70, 0.7);
+    }
+
+    .intermedio {
+      background-color: #f4a261;
+      box-shadow: 0 0 10px rgba(244, 162, 97, 0.7);
+    }
+
+    .correcto {
+      background-color: #2a9d8f;
+      box-shadow: 0 0 10px rgba(42, 157, 143, 0.7);
+    }
+
+    /* ---- PIE DE PÁGINA ---- */
     footer {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: 0.9em;
-      color: #666;
+      color: white;
+      text-shadow: 0 1px 2px black;
+      background: rgba(0, 0, 0, 0.4);
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+      th, td {
+        font-size: 0.95em;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🌿 Suelo Vital SN</h1>
-  <h2>Monitoreo en tiempo real (ThingSpeak)</h2>
+  <header>
+    <h1><img src="https://cdn-icons-png.flaticon.com/512/427/427735.png" alt="Hoja" /> Suelo Vital SN</h1>
+    <p>Tu jardín siempre perfecto, sin que te des cuenta</p>
+  </header>
 
-  <div id="contenedor" class="grid"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre del Cliente</th>
+        <th>Dirección</th>
+        <th>Altura del césped (promedio)</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Itec</td>
+        <td>Av. Pres. Juan Domingo Perón 1933</td>
+        <td id="altura">--</td>
+        <td id="estado"><span class="estado">--</span></td>
+      </tr>
+    </tbody>
+  </table>
 
   <footer id="lastUpdate">📡 Cargando datos...</footer>
 
@@ -63,57 +161,51 @@
     const channelID = 3141855;
     const readAPIKey = "LMNEZ5PKF2Q9HUAH";
 
-    const sensores = [
-      { id: 1, nombre: "Sensor 1" },
-      { id: 2, nombre: "Sensor 2" },
-      { id: 3, nombre: "Sensor 3" },
-      { id: 4, nombre: "Sensor 4" },
-      { id: 5, nombre: "Promedio" }
-    ];
-
-    const contenedor = document.getElementById("contenedor");
-
-    sensores.forEach(s => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${s.nombre}</h3>
-        <div id="valor${s.id}" class="value">--</div>
-      `;
-      contenedor.appendChild(card);
-    });
-
-    async function actualizarDatos() {
+    async function obtenerDatos() {
       try {
         const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
-        const resp = await fetch(url);
-        const data = await resp.json();
+        const response = await fetch(url);
+        const data = await response.json();
 
-        if (!data.feeds || data.feeds.length === 0) {
-          console.warn("Sin datos recientes");
-          return;
-        }
+        if (!data.feeds || data.feeds.length === 0) return;
 
         const feed = data.feeds[0];
-        sensores.forEach(s => {
-          const valor = feed[`field${s.id}`];
-          document.getElementById(`valor${s.id}`).textContent =
-            valor ? `${parseFloat(valor).toFixed(2)} cm` : "--";
-        });
+        const valorPromedio = parseFloat(feed.field5);
 
-        // Mostrar fecha/hora última actualización
+        const alturaCelda = document.getElementById("altura");
+        const estadoCelda = document.getElementById("estado").querySelector(".estado");
+
+        if (!isNaN(valorPromedio)) {
+          alturaCelda.textContent = valorPromedio.toFixed(2) + " cm";
+
+          if (valorPromedio < 20) {
+            estadoCelda.textContent = "Incorrecto";
+            estadoCelda.className = "estado bajo";
+          } else if (valorPromedio >= 20 && valorPromedio <= 22) {
+            estadoCelda.textContent = "Intermedio";
+            estadoCelda.className = "estado intermedio";
+          } else {
+            estadoCelda.textContent = "Correcto";
+            estadoCelda.className = "estado correcto";
+          }
+        } else {
+          alturaCelda.textContent = "--";
+          estadoCelda.textContent = "--";
+          estadoCelda.className = "estado";
+        }
+
         const fecha = new Date(feed.created_at);
         document.getElementById("lastUpdate").textContent =
           `📅 Última actualización: ${fecha.toLocaleString()}`;
-      } catch (err) {
-        console.error("Error al obtener datos:", err);
+      } catch (error) {
+        console.error("Error al leer ThingSpeak:", error);
         document.getElementById("lastUpdate").textContent =
           "⚠ Error al conectar con ThingSpeak";
       }
     }
 
-    actualizarDatos();
-    setInterval(actualizarDatos, 20000); // Actualiza cada 20 segundos
+    obtenerDatos();
+    setInterval(obtenerDatos, 20000);
   </script>
 </body>
 </html>
