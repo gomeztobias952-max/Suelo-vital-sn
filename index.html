@@ -1,214 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suelo Vital SN</title>
-<style>
-  body {
-    font-family: "Inter", sans-serif;
-    background: linear-gradient(to bottom, #a8e063, #56ab2f);
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 20px;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suelo Vital SN</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #b7e1a1, #d8f5c4);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-  h1 {
-    color: #fff;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-    font-size: 2rem;
-    margin-bottom: 5px;
-  }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 85%;
+      max-width: 900px;
+      padding: 25px;
+      text-align: left;
+    }
 
-  h2 {
-    color: #f7f7f7;
-    font-weight: 400;
-    margin-top: 0;
-  }
+    .header {
+      display: flex;
+      align-items: center;
+      background-color: #76b852;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 22px;
+      font-weight: 600;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
 
-  table {
-    width: 95%;
-    max-width: 900px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
+    .info-line {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
 
-  th, td {
-    text-align: center;
-    padding: 14px;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
 
-  th {
-    background: #f4f4f4;
-    color: #333;
-    font-weight: bold;
-  }
+    th {
+      border-bottom: 2px solid #ccc;
+      padding: 10px;
+      font-size: 15px;
+    }
 
-  tr:nth-child(even) {
-    background: #f9f9f9;
-  }
+    td {
+      padding: 10px;
+      color: #333;
+      font-size: 15px;
+    }
 
-  #estado {
-    font-weight: bold;
-    color: white;
-    border-radius: 20px;
-    padding: 10px 20px;
-    display: inline-block;
-  }
+    .estado {
+      font-weight: bold;
+      color: white;
+      border-radius: 10px;
+      padding: 6px 12px;
+      display: inline-block;
+    }
 
-  .rojo {
-    background-color: #e74c3c;
-  }
+    .verde {
+      background-color: #2ecc71;
+    }
 
-  .amarillo {
-    background-color: #f1c40f;
-    color: #000;
-  }
+    .amarillo {
+      background-color: #f1c40f;
+    }
 
-  .verde {
-    background-color: #2ecc71;
-  }
+    .rojo {
+      background-color: #e74c3c;
+    }
 
-  footer {
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #fff;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-  }
+    .actualizacion {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #666;
+      text-align: left;
+    }
 
-  .leyenda {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-    color: #fff;
-    align-items: center;
-    justify-content: center;
-  }
+    footer {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #777;
+    }
 
-  .cuadro {
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    display: inline-block;
-    margin-right: 5px;
-  }
-
-  .verde-bg { background: #2ecc71; }
-  .amarillo-bg { background: #f1c40f; }
-  .rojo-bg { background: #e74c3c; }
-
-  .canal {
-    margin-top: 5px;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-
-  .actualizacion {
-    color: #fff;
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
-
-</style>
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">☀️ Suelo Vital SN — Tu jardín siempre perfecto</div>
 
-<h1>🌿 Suelo Vital SN</h1>
-<h2>Tu jardín siempre perfecto, sin que te des cuenta</h2>
+    <div class="info-line">
+      <span style="color:#2ecc71;">🟢 Correcto (&gt;22 cm)</span> |
+      <span style="color:#f1c40f;">🟡 Intermedio (20–22 cm)</span> |
+      <span style="color:#e74c3c;">🔴 Error (&lt;20 cm)</span>
+      <br>
+      Canal: 3141855
+    </div>
 
-<div class="leyenda">
-  <span><span class="cuadro verde-bg"></span> Correcto (> 22 cm)</span>
-  <span><span class="cuadro amarillo-bg"></span> Intermedio (20–22 cm)</span>
-  <span><span class="cuadro rojo-bg"></span> Error (< 20 cm)</span>
-</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre del Cliente</th>
+          <th>Dirección</th>
+          <th>Altura S1</th>
+          <th>Altura S2</th>
+          <th>Altura S3</th>
+          <th>Altura S4</th>
+          <th>Altura Promedio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="tabla">
+        <tr>
+          <td>ITEC</td>
+          <td>Av. Pres. Juan Domingo Perón 1933</td>
+          <td id="s1">--</td>
+          <td id="s2">--</td>
+          <td id="s3">--</td>
+          <td id="s4">--</td>
+          <td id="promedio">--</td>
+          <td id="estado" class="estado">--</td>
+        </tr>
+      </tbody>
+    </table>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre del Cliente</th>
-      <th>Dirección</th>
-      <th>Altura S1</th>
-      <th>Altura S2</th>
-      <th>Altura S3</th>
-      <th>Altura S4</th>
-      <th>Altura Promedio</th>
-      <th>Estado</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ITEC</td>
-      <td>Av. Pres. Juan Domingo Perón 1933</td>
-      <td id="s1">--</td>
-      <td id="s2">--</td>
-      <td id="s3">--</td>
-      <td id="s4">--</td>
-      <td id="promedio">--</td>
-      <td><span id="estado">--</span></td>
-    </tr>
-  </tbody>
-</table>
+    <div class="actualizacion" id="actualizacion">Última actualización: --</div>
+    <footer>© 2025 Suelo Vital SN — Monitoreo de césped</footer>
+  </div>
 
-<p class="canal">Canal: 3141855</p>
-<p class="actualizacion" id="actualizacion">Última actualización: --</p>
+  <script>
+    const API_URL = "https://api.thingspeak.com/channels/3141855/feeds/last.json?api_key=LMNEZ5PKF2Q9HUAH";
 
-<footer>© 2025 Suelo Vital SN — Proyecto ITEC</footer>
+    async function actualizarDatos() {
+      try {
+        const respuesta = await fetch(API_URL);
+        const datos = await respuesta.json();
 
-<script>
-  const channelID = 3141855;
-  const readAPIKey = "LMNEZ5PKF2Q9HUAH";
+        const s1 = parseFloat(datos.field1).toFixed(2);
+        const s2 = parseFloat(datos.field2).toFixed(2);
+        const s3 = parseFloat(datos.field3).toFixed(2);
+        const s4 = parseFloat(datos.field4).toFixed(2);
+        const promedio = ((+s1 + +s2 + +s3 + +s4) / 4).toFixed(2);
 
-  async function obtenerDatos() {
-    try {
-      const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
-      const respuesta = await fetch(url);
-      const datos = await respuesta.json();
-      const feed = datos.feeds[0];
+        document.getElementById("s1").textContent = s1;
+        document.getElementById("s2").textContent = s2;
+        document.getElementById("s3").textContent = s3;
+        document.getElementById("s4").textContent = s4;
+        document.getElementById("promedio").textContent = promedio;
 
-      const s1 = parseFloat(feed.field1);
-      const s2 = parseFloat(feed.field2);
-      const s3 = parseFloat(feed.field3);
-      const s4 = parseFloat(feed.field4);
-      const promedio = parseFloat(feed.field5);
+        const estado = document.getElementById("estado");
+        estado.classList.remove("verde", "amarillo", "rojo");
 
-      document.getElementById("s1").textContent = s1.toFixed(2);
-      document.getElementById("s2").textContent = s2.toFixed(2);
-      document.getElementById("s3").textContent = s3.toFixed(2);
-      document.getElementById("s4").textContent = s4.toFixed(2);
-      document.getElementById("promedio").textContent = promedio.toFixed(2);
+        if (promedio > 22) {
+          estado.textContent = "CORRECTO (>22 cm)";
+          estado.classList.add("verde");
+        } else if (promedio >= 20 && promedio <= 22) {
+          estado.textContent = "INTERMEDIO (20–22 cm)";
+          estado.classList.add("amarillo");
+        } else {
+          estado.textContent = "ERROR (<20 cm)";
+          estado.classList.add("rojo");
+        }
 
-      const estado = document.getElementById("estado");
-      estado.className = "";
-
-      if (promedio < 20) {
-        estado.textContent = "ERROR (menos de 20 cm)";
-        estado.classList.add("rojo");
-      } else if (promedio >= 20 && promedio <= 22) {
-        estado.textContent = "INTERMEDIO (20–22 cm)";
-        estado.classList.add("amarillo");
-      } else {
-        estado.textContent = "CORRECTO (> 22 cm)";
-        estado.classList.add("verde");
+        document.getElementById("actualizacion").textContent =
+          "Última actualización: " + new Date().toLocaleString();
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
       }
-
-      const fecha = new Date(feed.created_at);
-      document.getElementById("actualizacion").textContent =
-        "Última actualización: " + fecha.toLocaleString();
-    } catch (e) {
-      console.error("Error al obtener datos:", e);
     }
-  }
 
-  obtenerDatos();
-  setInterval(obtenerDatos, 20000);
-</script>
-
+    actualizarDatos();
+    setInterval(actualizarDatos, 20000);
+  </script>
 </body>
 </html>
