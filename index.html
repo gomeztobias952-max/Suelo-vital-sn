@@ -1,211 +1,335 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌿 Suelo Vital SN</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Suelo Vital SN — Monitor</title>
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    /* ---- ESTILO GENERAL ---- */
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: url("https://i.imgur.com/lSxN2qA.jpg") no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #222;
-      min-height: 100vh;
+    :root{
+      --verde-oscuro:#155724;
+      --verde:#2a9d8f;
+      --amarillo:#f4a261;
+      --rojo:#e63946;
+      --blanco: #ffffff;
+      --fondo-claro: #f0fbf3;
+      --glass: rgba(255,255,255,0.85);
     }
 
-    /* ---- CABECERA ---- */
+    /* Fondo pasto suave */
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, rgba(10,80,20,0.70) 0%, rgba(240,250,244,0.95) 45%);
+      color: #0b2b1a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:28px;
+      padding:28px 16px 56px;
+    }
+
     header {
-      text-align: center;
-      color: white;
-      background: rgba(0, 0, 0, 0.5);
-      width: 100%;
-      padding: 40px 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
     }
 
-    header h1 {
-      font-size: 2.5em;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      background: rgba(255,255,255,0.06);
+      padding:12px 18px;
+      border-radius:12px;
+      backdrop-filter: blur(4px);
     }
 
-    header img {
-      width: 40px;
-      height: 40px;
+    .logo {
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg,#ffffff33,#ffffff11);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
 
-    header p {
-      font-size: 1.2em;
-      margin-top: 8px;
-      color: #dfe6e9;
+    .logo img { width:36px; height:36px; }
+
+    .brand h1{
+      margin:0;
+      font-size:1.35rem;
+      color: var(--blanco);
+      font-weight:700;
+      letter-spacing:0.2px;
     }
 
-    /* ---- TABLA ---- */
+    .slogan {
+      color: #e6f3ea;
+      font-weight:500;
+      font-size:0.95rem;
+      text-align:center;
+      max-width:850px;
+    }
+
+    /* Contenedor principal (tabla estilo dashboard) */
+    .card {
+      width:100%;
+      max-width:1100px;
+      background: var(--glass);
+      border-radius:16px;
+      box-shadow: 0 10px 30px rgba(4,20,10,0.18);
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .table-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+    }
+
+    .title {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .title h2 { margin:0; color:var(--verde-oscuro); font-size:1.2rem; }
+    .title p { margin:0; color:#2f6b46; opacity:0.9; font-size:0.95rem; }
+
+    /* Tabla responsive */
     table {
-      margin-top: 40px;
+      width:100%;
       border-collapse: collapse;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-      width: 90%;
-      max-width: 750px;
-      backdrop-filter: blur(8px);
+      font-size:0.98rem;
     }
 
-    th, td {
-      padding: 18px 25px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+    thead th {
+      text-align:left;
+      color:#0a3b23;
+      font-weight:700;
+      padding:12px 10px;
+      border-bottom: 2px solid rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.6);
     }
 
-    th {
-      background-color: #f7f7f0;
-      font-size: 1.1em;
+    tbody td {
+      padding:14px 10px;
+      border-bottom:1px dashed rgba(0,0,0,0.06);
+      vertical-align:middle;
     }
 
-    td {
-      font-size: 1.05em;
-    }
+    .col-nombre { width:18%; color:var(--verde-oscuro); font-weight:600; }
+    .col-direccion { width:30%; color:#1c5a36; }
+    .col-values { text-align:center; width:9%; color:#0b3f24; font-weight:600; }
+    .col-prom { text-align:center; width:14%; font-weight:700; color:var(--verde-oscuro); }
+    .col-estado { text-align:center; width:14%; }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* ---- ESTADOS ---- */
-    .estado {
-      font-weight: bold;
-      padding: 10px 15px;
-      border-radius: 8px;
-      text-align: center;
+    /* badge estados */
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
       color: white;
-      display: inline-block;
-      min-width: 120px;
-      transition: all 0.3s ease;
+      min-width:160px;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
 
-    .bajo {
-      background-color: #e63946;
-      box-shadow: 0 0 10px rgba(230, 57, 70, 0.7);
+    .estado-bajo { background: linear-gradient(90deg, #e63946, #d43a3a); }
+    .estado-intermedio { background: linear-gradient(90deg, #f4a261, #f19640); color:#2b1200; }
+    .estado-correcto { background: linear-gradient(90deg, #2a9d8f, #1f8b75); }
+
+    /* leyenda */
+    .legend {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      color:#213d2b;
+    }
+    .legend .item { display:flex; gap:8px; align-items:center; padding:6px 8px; background:rgba(255,255,255,0.7); border-radius:8px; font-weight:600; }
+    .dot { width:12px; height:12px; border-radius:50%; display:inline-block; }
+
+    .dot.green { background:var(--verde); }
+    .dot.yellow { background:var(--amarillo); }
+    .dot.red { background:var(--rojo); }
+
+    /* footer pequeño */
+    .meta { display:flex; justify-content:space-between; align-items:center; gap:12px; color:#0b2b1a; font-size:0.92rem; }
+
+    /* responsiveness */
+    @media (max-width:900px){
+      .col-direccion { display:none; }
+      .col-values { width:12%; }
+      .col-prom { width:18%; }
     }
 
-    .intermedio {
-      background-color: #f4a261;
-      box-shadow: 0 0 10px rgba(244, 162, 97, 0.7);
+    @media (max-width:540px){
+      header { padding:10px; }
+      .brand h1 { font-size:1.05rem; }
+      .slogan { font-size:0.88rem; }
+      table { font-size:0.9rem; }
+      .badge { min-width:120px; padding:6px 10px; font-size:0.95rem; }
     }
 
-    .correcto {
-      background-color: #2a9d8f;
-      box-shadow: 0 0 10px rgba(42, 157, 143, 0.7);
-    }
-
-    /* ---- PIE DE PÁGINA ---- */
-    footer {
-      margin-top: 25px;
-      font-size: 0.9em;
-      color: white;
-      text-shadow: 0 1px 2px black;
-      background: rgba(0, 0, 0, 0.4);
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-      th, td {
-        font-size: 0.95em;
-        padding: 12px;
-      }
+    /* entrada animada sutil */
+    .fade-in { animation: fadeInUp 700ms ease both; }
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1><img src="https://cdn-icons-png.flaticon.com/512/427/427735.png" alt="Hoja" /> Suelo Vital SN</h1>
-    <p>Tu jardín siempre perfecto, sin que te des cuenta</p>
+
+  <header class="fade-in">
+    <div class="brand">
+      <div class="logo">
+        <!-- icono hoja -->
+        <img src="https://cdn-icons-png.flaticon.com/512/427/427735.png" alt="logo hoja">
+      </div>
+      <div>
+        <h1>Suelo Vital SN</h1>
+        <div class="slogan">Tu jardín siempre perfecto, sin que te des cuenta</div>
+      </div>
+    </div>
   </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre del Cliente</th>
-        <th>Dirección</th>
-        <th>Altura del césped (promedio)</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Itec</td>
-        <td>Av. Pres. Juan Domingo Perón 1933</td>
-        <td id="altura">--</td>
-        <td id="estado"><span class="estado">--</span></td>
-      </tr>
-    </tbody>
-  </table>
+  <main class="card fade-in" role="main" aria-labelledby="dashboardTitle">
+    <div class="table-header">
+      <div class="title">
+        <h2 id="dashboardTitle">Monitoreo de clientes</h2>
+        <p>Datos en vivo — actualizado automáticamente desde ThingSpeak</p>
+      </div>
 
-  <footer id="lastUpdate">📡 Cargando datos...</footer>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+        <div class="legend">
+          <div class="item"><span class="dot green"></span> Correcto (&gt; 22 cm)</div>
+          <div class="item"><span class="dot yellow"></span> Intermedio (20–22 cm)</div>
+          <div class="item"><span class="dot red"></span> Error (&lt; 20 cm)</div>
+        </div>
+        <div style="font-size:0.9rem;color:#09401f;margin-top:6px;">Canal: <strong>3141855</strong></div>
+      </div>
+    </div>
 
+    <!-- tabla -->
+    <table aria-describedby="dashboardTitle">
+      <thead>
+        <tr>
+          <th class="col-nombre">Nombre del Cliente</th>
+          <th class="col-direccion">Dirección</th>
+          <th class="col-values">Altura S1</th>
+          <th class="col-values">Altura S2</th>
+          <th class="col-values">Altura S3</th>
+          <th class="col-values">Altura S4</th>
+          <th class="col-prom">Altura Promedio</th>
+          <th class="col-estado">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-nombre">ITEC</td>
+          <td class="col-direccion">Av. Pres. Juan Domingo Perón 1933</td>
+          <td class="col-values" id="s1">--</td>
+          <td class="col-values" id="s2">--</td>
+          <td class="col-values" id="s3">--</td>
+          <td class="col-values" id="s4">--</td>
+          <td class="col-prom" id="prom">--</td>
+          <td class="col-estado" id="estadoCell"><div class="badge" id="estadoBadge">--</div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="meta" style="margin-top:6px;">
+      <div id="lastUpdate">Última actualización: --</div>
+      <div style="font-size:0.9rem;color:#064826;">Proyecto: Suelo Vital SN — ITEC</div>
+    </div>
+  </main>
+
+  <footer style="width:100%;max-width:1100px;text-align:center;color:#0c2d18;">
+    <small>© 2025 Suelo Vital SN — Monitoreo de césped</small>
+  </footer>
+
+  <!-- ======= SCRIPT: leer ThingSpeak y actualizar la UI ======= -->
   <script>
     const channelID = 3141855;
-    const readAPIKey = "LMNEZ5PKF2Q9HUAH";
+    const readAPIKey = "LMNEZ5PKF2Q9HUAH"; // tu read API key
 
-    async function obtenerDatos() {
+    async function fetchThingSpeak() {
       try {
         const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (!data.feeds || data.feeds.length === 0) return;
-
-        const feed = data.feeds[0];
-        const valorPromedio = parseFloat(feed.field5);
-
-        const alturaCelda = document.getElementById("altura");
-        const estadoCelda = document.getElementById("estado").querySelector(".estado");
-
-        if (!isNaN(valorPromedio)) {
-          alturaCelda.textContent = valorPromedio.toFixed(2) + " cm";
-
-          if (valorPromedio < 20) {
-            estadoCelda.textContent = "Incorrecto";
-            estadoCelda.className = "estado bajo";
-          } else if (valorPromedio >= 20 && valorPromedio <= 22) {
-            estadoCelda.textContent = "Intermedio";
-            estadoCelda.className = "estado intermedio";
-          } else {
-            estadoCelda.textContent = "Correcto";
-            estadoCelda.className = "estado correcto";
-          }
-        } else {
-          alturaCelda.textContent = "--";
-          estadoCelda.textContent = "--";
-          estadoCelda.className = "estado";
+        const r = await fetch(url, { cache: "no-store" });
+        const data = await r.json();
+        if (!data || !data.feeds || data.feeds.length === 0) {
+          console.warn("No hay datos en ThingSpeak");
+          return;
         }
 
+        const feed = data.feeds[0];
+
+        const s1 = parseFloat(feed.field1);
+        const s2 = parseFloat(feed.field2);
+        const s3 = parseFloat(feed.field3);
+        const s4 = parseFloat(feed.field4);
+        const prom = parseFloat(feed.field5);
+
+        // actualizar valores (si NaN -> mostrar --)
+        document.getElementById("s1").textContent = isNaN(s1) ? "--" : s1.toFixed(2);
+        document.getElementById("s2").textContent = isNaN(s2) ? "--" : s2.toFixed(2);
+        document.getElementById("s3").textContent = isNaN(s3) ? "--" : s3.toFixed(2);
+        document.getElementById("s4").textContent = isNaN(s4) ? "--" : s4.toFixed(2);
+        document.getElementById("prom").textContent = isNaN(prom) ? "--" : prom.toFixed(2);
+
+        // estado
+        const badge = document.getElementById("estadoBadge");
+        if (!isNaN(prom)) {
+          if (prom < 20) {
+            badge.className = "badge estado-bajo";
+            badge.textContent = "ERROR (menos de 20 cm)";
+          } else if (prom >= 20 && prom <= 22) {
+            badge.className = "badge estado-intermedio";
+            badge.textContent = "INTERMEDIO (20–22 cm)";
+          } else {
+            badge.className = "badge estado-correcto";
+            badge.textContent = "CORRECTO (más de 22 cm)";
+          }
+        } else {
+          badge.className = "badge";
+          badge.textContent = "--";
+        }
+
+        // fecha
         const fecha = new Date(feed.created_at);
-        document.getElementById("lastUpdate").textContent =
-          `📅 Última actualización: ${fecha.toLocaleString()}`;
-      } catch (error) {
-        console.error("Error al leer ThingSpeak:", error);
-        document.getElementById("lastUpdate").textContent =
-          "⚠ Error al conectar con ThingSpeak";
+        document.getElementById("lastUpdate").textContent = `Última actualización: ${fecha.toLocaleString()}`;
+
+      } catch (err) {
+        console.error("Error al leer ThingSpeak:", err);
+        document.getElementById("lastUpdate").textContent = "⚠ Error al conectar con ThingSpeak";
       }
     }
 
-    obtenerDatos();
-    setInterval(obtenerDatos, 20000);
+    // Primera carga
+    fetchThingSpeak();
+    // Intervalo (ThingSpeak permite 1 update cada 15s -> usar 20s para seguridad)
+    setInterval(fetchThingSpeak, 20000);
   </script>
 </body>
 </html>
