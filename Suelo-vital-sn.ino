@@ -2,8 +2,8 @@
 
 // ---------------- CONFIGURACIÓN DEL ESP ----------------
 SoftwareSerial esp(2, 3);  // RX Arduino(2) <-- TX ESP | TX Arduino(3) --> RX ESP
-const char* WIFI_SSID = "Familia Gomez -2.4GHz";  // ⚠️ tu red WiFi exacta
-const char* WIFI_PASS = "2219427800";             // ⚠️ contraseña exacta
+const char* WIFI_SSID = "claudio";  // ⚠️ tu red WiFi exacta
+const char* WIFI_PASS = "123456789";             // ⚠️ contraseña exacta
 
 // Canal ThingSpeak
 String writeAPIKey = "8XBJK1GAW61UV11Q";
