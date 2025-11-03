@@ -2,8 +2,8 @@
 
 // ---------------- CONFIGURACIÓN ESP8266 ----------------
 SoftwareSerial esp(2, 3); // RX Arduino(2) <-- TX ESP | TX Arduino(3) --> RX ESP
-const char* WIFI_SSID = "claudio";      // 👈 Cambia por tu red
-const char* WIFI_PASS = "123456789";     // 👈 Cambia por tu clave WiFi
+const char* WIFI_SSID = "Esp32";      // 👈 Cambia por tu red
+const char* WIFI_PASS = "santi2025";     // 👈 Cambia por tu clave WiFi
 
 // ---------------- CONFIGURACIÓN THINGSPEAK ----------------
 String apiKey = "8XBJK1GAW61UV11Q";   // Write API Key
