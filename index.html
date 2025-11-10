@@ -1,204 +1,183 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suelo Vital SN</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom right, #b7e1a1, #d8f5c4);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      width: 85%;
-      max-width: 900px;
-      padding: 25px;
-      text-align: left;
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      background-color: #76b852;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 22px;
-      font-weight: 600;
-      justify-content: center;
-      margin-bottom: 25px;
-    }
-
-    .info-line {
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-    }
-
-    th {
-      border-bottom: 2px solid #ccc;
-      padding: 10px;
-      font-size: 15px;
-    }
-
-    td {
-      padding: 10px;
-      color: #333;
-      font-size: 15px;
-    }
-
-    .estado {
-      font-weight: bold;
-      color: white;
-      border-radius: 10px;
-      padding: 6px 12px;
-      display: inline-block;
-    }
-
-    .verde { background-color: #2ecc71; }
-    .amarillo { background-color: #f1c40f; }
-    .rojo { background-color: #e74c3c; }
-
-    .actualizacion {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #666;
-      text-align: left;
-    }
-
-    footer {
-      text-align: right;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #777;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suelo Vital SN</title>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #b7e1a1, #d8f5c4);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 85%;
+  max-width: 900px;
+  padding: 25px;
+  text-align: left;
+}
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #76b852;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+.info-line {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+th {
+  border-bottom: 2px solid #ccc;
+  padding: 10px;
+  font-size: 15px;
+}
+td {
+  padding: 10px;
+  color: #333;
+  font-size: 15px;
+}
+.estado {
+  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  padding: 6px 12px;
+  display: inline-block;
+}
+.verde { background-color: #2ecc71; }
+.amarillo { background-color: #f1c40f; }
+.rojo { background-color: #e74c3c; }
+.actualizacion {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #666;
+  text-align: left;
+}
+footer {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #777;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">☀️ Suelo Vital SN — Tu jardín siempre perfecto</div>
-
-    <div class="info-line">
-      <span style="color:#2ecc71;">🟢 Correcto (1–5 cm)</span> |
-      <span style="color:#f1c40f;">🟡 Intermedio (5–7 cm)</span> |
-      <span style="color:#e74c3c;">🔴 Error (&gt;7 cm)</span>
-      <br>
-      Canal: 3141855
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre del Cliente</th>
-          <th>Dirección</th>
-          <th>Altura S1</th>
-          <th>Altura S2</th>
-          <th>Altura S3</th>
-          <th>Altura S4</th>
-          <th>Altura Promedio</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tabla">
-        <tr>
-          <td>ITEC</td>
-          <td>Av. Pres. Juan Domingo Perón 1933</td>
-          <td id="s1">--</td>
-          <td id="s2">--</td>
-          <td id="s3">--</td>
-          <td id="s4">--</td>
-          <td id="promedio">--</td>
-          <td id="estado" class="estado">--</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="actualizacion" id="actualizacion">Última actualización: --</div>
-    <footer>© 2025 Suelo Vital SN — Monitoreo de césped</footer>
+<div class="container">
+  <div class="header">☀️ Suelo Vital SN — Tu jardín siempre perfecto</div>
+  <div class="info-line">
+    <span style="color:#2ecc71;">🟢 Correcto (1–5 cm)</span> |
+    <span style="color:#f1c40f;">🟡 Intermedio (5–7 cm)</span> |
+    <span style="color:#e74c3c;">🔴 Error (>7 cm)</span><br>
+    Canal: 3141855
   </div>
 
-  <script>
-    const API_URL = "https://api.thingspeak.com/channels/3141855/feeds/last.json?api_key=LMNEZ5PKF2Q9HUAH";
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre del Cliente</th>
+        <th>Dirección</th>
+        <th>Altura S1</th>
+        <th>Altura S2</th>
+        <th>Altura S3</th>
+        <th>Altura S4</th>
+        <th>Altura Promedio</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody id="tabla">
+      <tr>
+        <td>ITEC</td>
+        <td>Av. Pres. Juan Domingo Perón 1933</td>
+        <td id="s1">--</td>
+        <td id="s2">--</td>
+        <td id="s3">--</td>
+        <td id="s4">--</td>
+        <td id="promedio">--</td>
+        <td id="estado" class="estado">--</td>
+      </tr>
+    </tbody>
+  </table>
 
-    // ✅ Conversión lineal: 23 cm reales = 1 cm mostrado, 13 cm reales = 11 cm mostrado
-    function convertirAltura(distanciaReal) {
-      const cmMax = 23;
-      const cmMin = 13;
-      const altMax = 11;
-      const altMin = 1;
-      if (distanciaReal > cmMax) return altMin;
-      if (distanciaReal < cmMin) return altMax;
-      const altura = ((cmMax - distanciaReal) / (cmMax - cmMin)) * (altMax - altMin) + altMin;
-      return altura.toFixed(1);
+  <div class="actualizacion" id="actualizacion">Última actualización: --</div>
+  <footer>© 2025 Suelo Vital SN — Monitoreo de césped</footer>
+</div>
+
+<script>
+const API_URL = "https://api.thingspeak.com/channels/3141855/feeds/last.json?api_key=LMNEZ5PKF2Q9HUAH";
+
+// Función para convertir distancia real (cm) en altura de césped (cm)
+function convertirAltura(distancia) {
+  const altura = (23 - distancia) + 1;
+  return altura < 0 ? 0 : altura.toFixed(1);
+}
+
+async function actualizarDatos() {
+  try {
+    const respuesta = await fetch(API_URL);
+    const datos = await respuesta.json();
+
+    const d1 = parseFloat(datos.field1);
+    const d2 = parseFloat(datos.field2);
+    const d3 = parseFloat(datos.field3);
+    const d4 = parseFloat(datos.field4);
+
+    // Convertimos distancias a alturas de césped
+    const s1 = convertirAltura(d1);
+    const s2 = convertirAltura(d2);
+    const s3 = convertirAltura(d3);
+    const s4 = convertirAltura(d4);
+    const promedio = ((+s1 + +s2 + +s3 + +s4) / 4).toFixed(1);
+
+    document.getElementById("s1").textContent = s1;
+    document.getElementById("s2").textContent = s2;
+    document.getElementById("s3").textContent = s3;
+    document.getElementById("s4").textContent = s4;
+    document.getElementById("promedio").textContent = promedio;
+
+    const estado = document.getElementById("estado");
+    estado.classList.remove("verde", "amarillo", "rojo");
+
+    // Estado según altura promedio
+    if (promedio <= 5) {
+      estado.textContent = "CORRECTO (1–5 cm)";
+      estado.classList.add("verde");
+    } else if (promedio > 5 && promedio <= 7) {
+      estado.textContent = "INTERMEDIO (5–7 cm)";
+      estado.classList.add("amarillo");
+    } else {
+      estado.textContent = "ERROR (>7 cm)";
+      estado.classList.add("rojo");
     }
 
-    async function actualizarDatos() {
-      try {
-        const res = await fetch(API_URL);
-        const datos = await res.json();
+    document.getElementById("actualizacion").textContent =
+      "Última actualización: " + new Date().toLocaleString();
 
-        // Alturas reales del ThingSpeak
-        const s1r = parseFloat(datos.field1);
-        const s2r = parseFloat(datos.field2);
-        const s3r = parseFloat(datos.field3);
-        const s4r = parseFloat(datos.field4);
+  } catch (error) {
+    console.error("Error al obtener datos:", error);
+  }
+}
 
-        // Conversión
-        const s1 = convertirAltura(s1r);
-        const s2 = convertirAltura(s2r);
-        const s3 = convertirAltura(s3r);
-        const s4 = convertirAltura(s4r);
-
-        const promedio = ((+s1 + +s2 + +s3 + +s4) / 4).toFixed(1);
-
-        // Mostrar datos
-        document.getElementById("s1").textContent = s1;
-        document.getElementById("s2").textContent = s2;
-        document.getElementById("s3").textContent = s3;
-        document.getElementById("s4").textContent = s4;
-        document.getElementById("promedio").textContent = promedio;
-
-        // Estado visual
-        const estado = document.getElementById("estado");
-        estado.classList.remove("verde", "amarillo", "rojo");
-
-        if (promedio <= 5) {
-          estado.textContent = "CORRECTO (1–5 cm)";
-          estado.classList.add("verde");
-        } else if (promedio > 5 && promedio <= 7) {
-          estado.textContent = "INTERMEDIO (5–7 cm)";
-          estado.classList.add("amarillo");
-        } else {
-          estado.textContent = "ERROR (>7 cm)";
-          estado.classList.add("rojo");
-        }
-
-        document.getElementById("actualizacion").textContent =
-          "Última actualización: " + new Date().toLocaleString();
-
-      } catch (error) {
-        console.error("❌ Error al obtener datos o convertir:", error);
-      }
-    }
-
-    actualizarDatos();
-    setInterval(actualizarDatos, 20000);
-  </script>
+actualizarDatos();
+setInterval(actualizarDatos, 20000);
+</script>
 </body>
 </html>
