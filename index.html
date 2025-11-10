@@ -124,27 +124,16 @@ footer {
 <script>
 const API_URL = "https://api.thingspeak.com/channels/3141855/feeds/last.json?api_key=LMNEZ5PKF2Q9HUAH";
 
-// Función para convertir distancia real (cm) en altura de césped (cm)
-function convertirAltura(distancia) {
-  const altura = (23 - distancia) + 1;
-  return altura < 0 ? 0 : altura.toFixed(1);
-}
-
 async function actualizarDatos() {
   try {
     const respuesta = await fetch(API_URL);
     const datos = await respuesta.json();
 
-    const d1 = parseFloat(datos.field1);
-    const d2 = parseFloat(datos.field2);
-    const d3 = parseFloat(datos.field3);
-    const d4 = parseFloat(datos.field4);
-
-    // Convertimos distancias a alturas de césped
-    const s1 = convertirAltura(d1);
-    const s2 = convertirAltura(d2);
-    const s3 = convertirAltura(d3);
-    const s4 = convertirAltura(d4);
+    // Alturas ya convertidas desde Arduino
+    const s1 = parseFloat(datos.field1).toFixed(1);
+    const s2 = parseFloat(datos.field2).toFixed(1);
+    const s3 = parseFloat(datos.field3).toFixed(1);
+    const s4 = parseFloat(datos.field4).toFixed(1);
     const promedio = ((+s1 + +s2 + +s3 + +s4) / 4).toFixed(1);
 
     document.getElementById("s1").textContent = s1;
@@ -156,7 +145,7 @@ async function actualizarDatos() {
     const estado = document.getElementById("estado");
     estado.classList.remove("verde", "amarillo", "rojo");
 
-    // Estado según altura promedio
+    // Clasificación según alturas ya convertidas
     if (promedio <= 5) {
       estado.textContent = "CORRECTO (1–5 cm)";
       estado.classList.add("verde");
