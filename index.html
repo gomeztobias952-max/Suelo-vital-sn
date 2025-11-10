@@ -103,9 +103,9 @@
     <div class="header">☀️ Suelo Vital SN — Tu jardín siempre perfecto</div>
 
     <div class="info-line">
-      <span style="color:#2ecc71;">🟢 Correcto (23–19 cm reales)</span> |
-      <span style="color:#f1c40f;">🟡 Intermedio (19–17 cm reales)</span> |
-      <span style="color:#e74c3c;">🔴 Error (&lt; 17 cm reales)</span>
+      <span style="color:#2ecc71;">🟢 Correcto (1–5 cm)</span> |
+      <span style="color:#f1c40f;">🟡 Intermedio (5–7 cm)</span> |
+      <span style="color:#e74c3c;">🔴 Error (&gt; 7 cm)</span>
       <br>
       Canal: 3141855
     </div>
@@ -144,7 +144,7 @@
   <script>
     const API_URL = "https://api.thingspeak.com/channels/3141855/feeds/last.json?api_key=LMNEZ5PKF2Q9HUAH";
 
-    // 🔁 Conversión de altura real (cm) a altura mostrada (escala visual)
+    // Conversión de altura real (cm) a altura mostrada (escala visual)
     function convertirAltura(cmReal) {
       const puntos = [
         [23, 1], [22.5, 1.5], [22, 2], [21, 3], [20, 4],
@@ -192,17 +192,15 @@
         const estado = document.getElementById("estado");
         estado.classList.remove("verde", "amarillo", "rojo");
 
-        // Determinamos el estado según el promedio real
-        const promedioReal = (s1r + s2r + s3r + s4r) / 4;
-
-        if (promedioReal >= 19) {
-          estado.textContent = "CORRECTO (23–19 cm reales)";
+        // Evaluación del estado según la escala convertida
+        if (promedio <= 5) {
+          estado.textContent = "CORRECTO (1–5 cm)";
           estado.classList.add("verde");
-        } else if (promedioReal >= 17) {
-          estado.textContent = "INTERMEDIO (19–17 cm reales)";
+        } else if (promedio > 5 && promedio <= 7) {
+          estado.textContent = "INTERMEDIO (5–7 cm)";
           estado.classList.add("amarillo");
         } else {
-          estado.textContent = "ERROR (< 17 cm reales)";
+          estado.textContent = "ERROR (> 7 cm)";
           estado.classList.add("rojo");
         }
 
