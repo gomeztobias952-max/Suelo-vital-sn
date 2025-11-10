@@ -104,9 +104,9 @@
     <div class="header">☀️ Suelo Vital SN — Tu jardín siempre perfecto</div>
 
     <div class="info-line">
-      <span style="color:#2ecc71;">🟢 Correcto (&gt;22 cm)</span> |
-      <span style="color:#f1c40f;">🟡 Intermedio (20–22 cm)</span> |
-      <span style="color:#e74c3c;">🔴 Error (&lt;20 cm)</span>
+      <span style="color:#2ecc71;">🟢 Correcto (≥ 5 cm)</span> |
+      <span style="color:#f1c40f;">🟡 Intermedio (3 – 5 cm)</span> |
+      <span style="color:#e74c3c;">🔴 Error (&lt; 3 cm)</span>
       <br>
       Canal: 3141855
     </div>
@@ -165,14 +165,15 @@
         const estado = document.getElementById("estado");
         estado.classList.remove("verde", "amarillo", "rojo");
 
-        if (promedio > 22) {
-          estado.textContent = "CORRECTO (>22 cm)";
+        // 🌿 Nueva escala basada en altura convertida
+        if (promedio >= 5) {
+          estado.textContent = "CORRECTO (≥ 5 cm)";
           estado.classList.add("verde");
-        } else if (promedio >= 20 && promedio <= 22) {
-          estado.textContent = "INTERMEDIO (20–22 cm)";
+        } else if (promedio >= 3 && promedio < 5) {
+          estado.textContent = "INTERMEDIO (3–5 cm)";
           estado.classList.add("amarillo");
         } else {
-          estado.textContent = "ERROR (<20 cm)";
+          estado.textContent = "ERROR (< 3 cm)";
           estado.classList.add("rojo");
         }
 
